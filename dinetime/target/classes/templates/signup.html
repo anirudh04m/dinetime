@@ -3,6 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <title>Sign Up</title>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const form = document.querySelector("form");
+      const passwordField = document.querySelector("input[name='password']");
+      const confirmPasswordField = document.querySelector("input[name='confirmPassword']");
+      const messageParagraph = document.getElementById("message");
+      const usernameField = document.querySelector("input[name='username']");
+      const submitBtn = document.getElementById("submitBtn");
+
+
+      confirmPasswordField.addEventListener("input", function () {
+      if (passwordField.value !== confirmPasswordField.value) {
+    messageParagraph.textContent = "Passwords do not match.";
+    messageParagraph.style.color = "red";
+    submitBtn.disabled = true
+    } else {
+        messageParagraph.textContent = "";
+        submitBtn.disabled = false
+      }
+    });
+
+    usernameField.addEventListener("blur", function () {
+      const username = usernameField.value.trim();
+      if (username === "") return;
+
+      const xhr = new XMLHttpRequest();
+    xhr.open("POST", "/user/verify-username", true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4) {
+      if (xhr.status === 200) {
+        const exists = xhr.responseText === "true";
+        console.log(exists)
+      if (exists) {
+    messageParagraph.textContent = "Username is already taken.";
+    messageParagraph.style.color = "red";
+    submitBtn.disabled = true
+      } else {
+        messageParagraph.textContent = "Username is available.";
+        messageParagraph.style.color = "green";
+        submitBtn.disabled = false
+      }
+    } else {
+        messageParagraph.textContent = "Error checking username.";
+        messageParagraph.style.color = "red";
+        submitBtn.disabled = true
+      }
+    }
+    };
+
+      const data = JSON.stringify({ username: username });
+    xhr.send(data);
+    });
+
+    form.addEventListener("submit", function (e) {
+      if (passwordField.value !== confirmPasswordField.value) {
+    e.preventDefault();
+    messageParagraph.textContent = "Passwords do not match.";
+    messageParagraph.style.color = "red";
+    }
+    });
+    });
+  </script>
 </head>
 <body>
 <h1>Sign Up Here</h1>
@@ -43,9 +107,11 @@
   </label>
   <br>
   <br>
-  <input type="submit" value="Sign Up">
+  <input th:id="submitBtn" type="submit" value="Sign Up">
 </form>
 <br>
-<p th:text="${message}"></p>
+<button type="button" onclick="history.back()">Go Back</button>
+<br>
+<p th:id="message" th:text="${message}"></p>
 </body>
 </html>

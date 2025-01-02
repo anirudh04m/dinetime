@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Order Management</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+<h1>Order Management</h1>
+
+<table>
+  <thead>
+  <tr>
+    <th>Order ID</th>
+    <th>Customer</th>
+    <th>Status</th>
+    <th>Total Price</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="order : ${orders}">
+    <td th:text="${order.orderId}"></td>
+    <td th:text="${order.user.fname} + ' ' + ${order.user.lname}"></td>
+    <td>
+      <select th:id="'status-dropdown-'+ ${order.orderId}">
+        <option th:selected="${order.status == 'Pending'}" value="Pending">Pending</option>
+        <option th:selected="${order.status == 'Processing'}" value="Processing">Processing</option>
+        <option th:selected="${order.status == 'Completed'}" value="Completed">Completed</option>
+        <option th:selected="${order.status == 'Cancelled'}" value="Cancelled">Cancelled</option>
+      </select>
+    </td>
+    <td th:text="${order.totalPrice}"></td>
+    <td>
+      <button th:onclick="'updateStatus(' + ${order.orderId} + ')'">Update</button>
+      <span class="update-message" th:id="'update-message-' + ${order.orderId}" style="color: green; display: none;">Updated</span>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<div>
+  <button th:if="${currentPage > 0}"
+          th:onclick="'location.href=\'?restaurantId=' + ${restaurantId} + '&page=' + (${currentPage} - 1) + '&pageSize=5\''">
+    Previous
+  </button>
+  <span th:text="'Page ' + (${currentPage} + 1) + ' of ' + ${totalPages}"></span>
+  <button th:if="${currentPage + 1 < totalPages}"
+          th:onclick="'location.href=\'?restaurantId=' + ${restaurantId} + '&page=' + (${currentPage} + 1) + '&pageSize=5\''">
+    Next
+  </button>
+</div>
+<br>
+<form th:action="@{/excel/order/download}" method="post">
+  <input type="hidden" name="restaurantId" th:value="${restaurantId}">
+  <input type="submit" value="Download Excel">
+</form>
+
+<br>
+<form action="/restaurant/admin" method="post">
+  <input type="hidden" name="selectedRestaurant" th:value="${restaurantId}">
+  <input type="submit" value="Go Back">
+</form>
+
+<script>
+  function updateStatus(orderId) {
+    const dropdown = document.getElementById(`status-dropdown-${orderId}`);
+    const newStatus = dropdown.value;
+
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "/admin/order/updateStatus", true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4) {
+        const messageSpan = document.getElementById(`update-message-${orderId}`);
+        if (xhr.status === 200) {
+          messageSpan.textContent = xhr.responseText;
+          messageSpan.style.color = "green";
+        } else {
+          messageSpan.textContent = "Error updating status";
+          messageSpan.style.color = "red";
+        }
+        messageSpan.style.display = "inline";
+        setTimeout(() => {
+          messageSpan.style.display = "none";
+        }, 3000);
+      }
+    };
+
+    const data = JSON.stringify({
+      orderId: orderId,
+      status: newStatus
+    });
+
+    xhr.send(data);
+  }
+</script>
+</body>
+</html>

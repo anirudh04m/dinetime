@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+  <meta charset="UTF-8">
+  <title>Manage Menu Items</title>
+</head>
+<body>
+<h1 th:text="${restaurant.name} + ' Menu Management'">Restaurant Management System</h1>
+  <label for="menuItems">Menu Items:</label>
+  <ul id="menuItems">
+    <li th:each="item : ${itemList}" th:text="${item.name} + ' - ' + ${item.price}"></li>
+  </ul>
+  <br>
+  <br>
+<form action="/item" method="post">
+    <input type="hidden" name="restaurantId" th:value="${restaurant.resId}">
+    <input type="submit" value="Add item">
+</form>
+<br>
+<form action="/restaurant/admin" method="post">
+    <input type="hidden" name="selectedRestaurant" th:value="${restaurant.resId}">
+    <input type="submit" value="Go Back">
+</form>
+
+</body>
+</html>

@@ -1,7 +1,6 @@
 package com.anirudhm.dinetime;
 
-import com.anirudhm.dinetime.models.Restaurant;
-import com.anirudhm.dinetime.models.User;
+import com.anirudhm.dinetime.models.*;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
@@ -41,6 +40,9 @@ public class DinetimeApplication {
 		metaDataSources.addPackage("com.anirudhm.dinetime.models");
 		metaDataSources.addAnnotatedClass(User.class);
 		metaDataSources.addAnnotatedClass(Restaurant.class);
+		metaDataSources.addAnnotatedClass(Item.class);
+		metaDataSources.addAnnotatedClass(Order.class);
+		metaDataSources.addAnnotatedClass(OrderItem.class);
 		Metadata metaData = metaDataSources.buildMetadata();
 
 		return metaData.getSessionFactoryBuilder().build();

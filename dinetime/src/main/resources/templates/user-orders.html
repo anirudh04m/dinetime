@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>User Orders</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+<h1>Orders for <span th:text="${user.fname} + ' ' + ${user.lname}">User Name</span></h1>
+
+<table>
+  <thead>
+  <tr>
+    <th>Order ID</th>
+    <th>Restaurant</th>
+    <th>Status</th>
+    <th>Total Price</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="order : ${orders}">
+    <td th:text="${order.orderId}"></td>
+    <td th:text="${order.restaurant.name}"></td>
+    <td th:text="${order.status}"></td>
+    <td th:text="${order.totalPrice}"></td>
+  </tr>
+  </tbody>
+</table>
+<br>
+<button type="button" onclick="history.back()">Go Back</button>
+
+</body>
+</html>

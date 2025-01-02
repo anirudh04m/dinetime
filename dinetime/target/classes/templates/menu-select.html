@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Select Menu Items</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+<h1 th:text="${restaurant.name} + ' Menu'">Restaurant Menu</h1>
+<form th:action="@{/cart/add}" method="post">
+  <input type="hidden" name="restaurantId" th:value="${restaurant.resId}">
+
+  <table>
+    <thead>
+    <tr>
+      <th>Select</th>
+      <th>Item Name</th>
+      <th>Description</th>
+      <th>Price</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="item : ${menuItems}">
+      <td><input type="checkbox" name="selectedItems" th:value="${item.itemId}"></td>
+      <td th:text="${item.name}"></td>
+      <td th:text="${item.description}"></td>
+      <td th:text="${item.price}"></td>
+    </tr>
+    </tbody>
+  </table>
+
+  <br>
+  <button type="submit">Add to Cart</button>
+</form>
+<br>
+<button type="button" onclick="history.back()">Go Back</button>
+
+</body>
+</html>

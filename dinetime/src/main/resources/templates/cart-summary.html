@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cart Summary</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+<h1>Cart Summary for <span th:text="${restaurant.name}">Restaurant</span></h1>
+<table>
+  <thead>
+  <tr>
+    <th>Item Name</th>
+    <th>Description</th>
+    <th>Price</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="item : ${cartItems}">
+    <td th:text="${item.name}"></td>
+    <td th:text="${item.description}"></td>
+    <td th:text="${item.price}"></td>
+  </tr>
+  </tbody>
+</table>
+
+<br>
+<p>Total Items: <span th:text="${#lists.size(cartItems)}">0</span></p>
+<p>Total Price: $<span th:text="${totalPrice}">0.00</span></p>
+<br>
+<form th:action="@{/order/place}" method="post">
+  <input type="hidden" name="restaurantId" th:value="${restaurant.resId}">
+  <input type="hidden" name="selectedItems" th:each="item : ${cartItems}" th:value="${item.itemId}">
+  <button type="submit">Place Order</button>
+</form>
+<br>
+<button type="button" onclick="history.back()">Go Back</button>
+
+</body>
+</html>

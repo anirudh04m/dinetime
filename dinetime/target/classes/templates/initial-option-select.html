@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Select an option</title>
+</head>
+<body>
+<h1>Welcome, <span th:text="${session.user.fname} + ' ' + ${session.user.lname}">User Name</span>!</h1>
+<p>What would you like to do?</p>
+
+<form th:action="@{/order/user}" method="get">
+  <button type="submit">View My Orders</button>
+</form>
+<br>
+<form th:action="@{/restaurant/select}" method="get">
+  <button type="submit">Select a Restaurant</button>
+</form>
+<br>
+<form th:action="@{/logout}" method="post">
+  <button type="submit">Logout</button>
+</form>
+</body>
+</html>

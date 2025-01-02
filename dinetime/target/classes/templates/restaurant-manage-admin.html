@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Select action</title>
+</head>
+<body>
+<h1 th:text="${restaurant.name} + ' Management System'">Restaurant Management System</h1>
+<form action="/restaurant/admin/select" method="post">
+    <label for="dropdown">Choose an option:</label>
+    <select id="dropdown" name="selectedAction">
+        <option value="" disabled selected>Select an option</option>
+        <option value="item">Manage Menu Items</option>
+        <option value="order">Manage Orders</option>
+    </select>
+    <br>
+    <br>
+    <input type="hidden" name="restaurant" th:value="${restaurant.resId}">
+    <button type="submit">Submit</button>
+</form>
+<br>
+<form action="/restaurant/admin/back" method="get">
+    <button type="submit">Go Back</button>
+</form>
+</body>
+</html>

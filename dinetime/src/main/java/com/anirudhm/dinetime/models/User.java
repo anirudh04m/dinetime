@@ -1,12 +1,12 @@
 package com.anirudhm.dinetime.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.anirudhm.dinetime.enums.Role;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
-@Table
+@Table(name = "users")
 public class User {
 
     @Id
@@ -17,11 +17,18 @@ public class User {
 
     private String lname;
 
+    @Column(length = 10)
     private String phone;
 
     private String username;
 
     private String password;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Order> orders;
 
     public Integer getUserId() {
         return userId;
@@ -69,5 +76,21 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

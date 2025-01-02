@@ -3,7 +3,6 @@ package com.anirudhm.dinetime.dao;
 import com.anirudhm.dinetime.models.Restaurant;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -14,13 +13,6 @@ public class RestaurantDao {
 
     @Autowired
     SessionFactory sessionFactory;
-
-    public void saveRestaurant(Restaurant restaurant) {
-        Session session = sessionFactory.openSession();
-        Transaction t = session.beginTransaction();
-        session.persist(restaurant);
-        t.commit();
-    }
 
     public List<Restaurant> getAllRestaurants() {
         Session session = sessionFactory.openSession();
@@ -33,5 +25,18 @@ public class RestaurantDao {
             session.close();
         }
         return restaurants;
+    }
+
+    public Restaurant getRestaurantById(int id) {
+        Session session = sessionFactory.openSession();
+        Restaurant restaurant = null;
+        try {
+            restaurant = session.get(Restaurant.class, id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return restaurant;
     }
 }

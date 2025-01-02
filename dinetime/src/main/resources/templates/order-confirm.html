@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Order Confirmation</title>
+</head>
+<body>
+<h1>Order Confirmation</h1>
+<p>Thank you for your order, <span th:text="${order.user.fname} + ' ' + ${order.user.lname}"></span>!</p>
+<p>Order ID: <span th:text="${order.orderId}"></span></p>
+<p>Restaurant: <span th:text="${restaurant.name}"></span></p>
+<p>Total Price: $<span th:text="${order.totalPrice}"></span></p>
+<p>Status: <span th:text="${order.status}"></span></p>
+
+<form th:action="@{/initial}" method="get">
+    <button type="submit">Go to home page</button>
+</form>
+</body>
+</html>
