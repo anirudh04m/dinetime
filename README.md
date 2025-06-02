@@ -46,7 +46,6 @@ DineTime is a comprehensive restaurant management system built with Java Spring 
 3. Add/edit menu items
 4. View and process orders
 5. Update order status
-6. Export sales reports
 
 ## 👥 Authors
 
